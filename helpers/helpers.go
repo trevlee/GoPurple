@@ -1,14 +1,15 @@
 package helpers
 
 import (
+	"crypto/tls"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-
 func FetchUrl(url string) []byte {
-    res, err := http.Get(url)
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true} // ignore self-signed TLS cert
+	res, err := http.Get(url)
 
 	if err != nil {
 		log.Fatal(err)
@@ -19,4 +20,3 @@ func FetchUrl(url string) []byte {
 
 	return data
 }
-
